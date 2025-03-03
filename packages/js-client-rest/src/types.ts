@@ -1,9 +1,11 @@
+import {Middleware} from '@qdrant/openapi-typescript-fetch';
 import {components} from './openapi/generated_schema.js';
 
 export interface RestArgs {
     headers: Headers;
     timeout: number;
     connections?: number;
+    middlewares?: Middleware[];
 }
 
 export type SchemaFor<K extends keyof T, T extends object = components['schemas']> = T[K];

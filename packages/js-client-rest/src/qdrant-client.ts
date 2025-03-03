@@ -1,4 +1,5 @@
 import {maybe} from '@sevinf/maybe';
+import {Middleware} from '@qdrant/openapi-typescript-fetch';
 import {OpenApiClient, createApis} from './api-client.js';
 import {QdrantClientConfigError} from './errors.js';
 import {RestArgs, SchemaFor} from './types.js';
@@ -29,6 +30,10 @@ export type QdrantClientParams = {
      * Check compatibility with the server version. Default: `true`
      */
     checkCompatibility?: boolean;
+    /**
+     * Optional middlewares passed to REST client
+     */
+    middlewares?: Middleware[];
 };
 
 export class QdrantClient {
@@ -110,7 +115,8 @@ export class QdrantClient {
         const address = this._port ? `${this._host}:${this._port}` : this._host;
         this._restUri = `${this._scheme}://${address}${this._prefix}`;
         const connections = args.maxConnections;
-        const restArgs: RestArgs = {headers, timeout, connections};
+        const middlewares = args.middlewares;
+        const restArgs: RestArgs = {headers, timeout, connections, middlewares};
 
         this._openApiClient = createApis(this._restUri, restArgs);
 

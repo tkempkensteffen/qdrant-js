@@ -27,8 +27,8 @@ export function createApis(baseUrl: string, args: RestArgs) {
 
 export type OpenApiClient = ReturnType<typeof createApis>;
 
-export function createClient(baseUrl: string, {headers, timeout, connections}: RestArgs): Client {
-    const use: Middleware[] = [];
+export function createClient(baseUrl: string, {headers, timeout, connections, middlewares}: RestArgs): Client {
+    const use: Middleware[] = middlewares ?? [];
     if (Number.isFinite(timeout)) {
         use.push(async (url, init, next) => {
             const controller = new AbortController();
